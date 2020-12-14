@@ -27,6 +27,13 @@ const App = () => {
             component={CrearCuenta}
             options={{
               title: "Crear Cuenta",
+              headerStyle: {
+                backgroundColor: '#28303B'
+              },
+              headerTintColor: '#FFF',
+              headerTitleStyle: {
+                fontWeight: 'bold'
+              }
             }}
          />
 

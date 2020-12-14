@@ -10,10 +10,14 @@ import {
   Item,
   Toast,
 } from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 //Styles
 import globalStyles from '../styles/global';
 
 const Login = () => {
+  //React Navigation
+  const navigation = useNavigation();
+
   return (
     <Container style={[globalStyles.contenedor, {backgroundColor: '#e84347'}]}>
       <View style={globalStyles.contenido}>
@@ -29,7 +33,11 @@ const Login = () => {
             <Text style={globalStyles.botonTexto}>Iniciar Sesión</Text>
           </Button>
 
-          <Text style={globalStyles.enlace}>Crear Cuenta</Text>
+          <Text
+            style={globalStyles.enlace}
+            onPress={() => navigation.navigate('CrearCuenta')}>
+            Crear Cuenta
+          </Text>
         </Form>
       </View>
     </Container>
