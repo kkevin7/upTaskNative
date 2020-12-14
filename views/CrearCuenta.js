@@ -33,14 +33,9 @@ const CrearCuenta = () => {
             <Input secureTextEntry={true} placeholder="Password" />
           </Item>
           <Button square block style={globalStyles.boton}>
-            <Text style={globalStyles.botonTexto}>Iniciar Sesión</Text>
+            <Text style={globalStyles.botonTexto}>Registrarse</Text>
           </Button>
 
-          <Text
-            style={globalStyles.enlace}
-            onPress={() => navigation.navigate('CrearCuenta')}>
-            Crear Cuenta
-          </Text>
         </Form>
       </View>
     </Container>
