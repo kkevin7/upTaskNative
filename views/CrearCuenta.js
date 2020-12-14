@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 const CrearCuenta = () => {
     return (
         <View>
-            <Text>Login</Text>
+            <Text>CrearCuenta</Text>
         </View>
     )
 }
