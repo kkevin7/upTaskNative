@@ -51,6 +51,7 @@ const CrearCuenta = () => {
 
     //save user
     try {
+      console.log("Inicio");
       const {data} = await crearUsuario({
         variables: {
           input: {
@@ -60,9 +61,11 @@ const CrearCuenta = () => {
           }
         }
       });
-      console.log("data: ",data);
+      setMensaje(data.crearUsuario);
+      navigation.navigate('Login');
     } catch (error) {
       console.log('Error crearUsuario: ', error);
+      setMensaje(error.message.replace('GraphQL error', ''));
     }
   };
 
