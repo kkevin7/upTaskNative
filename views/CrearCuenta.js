@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {
   Container,
@@ -15,8 +15,43 @@ import {useNavigation} from '@react-navigation/native';
 import globalStyles from '../styles/global';
 
 const CrearCuenta = () => {
+  //State del formlario
+  const [nombre, setNombre] = useState('');
+  const [email, setEmail]  = useState('');
+  const [password, setPassword] = useState('');
+  const [mensaje, setMensaje] = useState(null);
+
   //React Navigation
   const navigation = useNavigation();
+
+  //Crear cuenta
+  const handleSubmit = () => {
+    //validar
+    if(nombre == '' || email === '' || password === ''){
+      //Mostrar un error
+      setMensaje('Todos los campos son obligatorios');
+      return;
+    }
+
+    //passwrod al menos 6 caracteres
+    if(password.length <6){
+      setMensaje('El password debe ser de al menos 6 caracteres');
+      return;
+    }
+
+    //save user
+
+
+  }
+
+  //Muestra un mensaje Toast
+  const mostrarAlerta = () => {
+    Toast.show({
+      text: mensaje,
+      buttonText: 'OK',
+      duration: 5000
+    })
+  }
 
   return (
     <Container style={[globalStyles.contenedor, {backgroundColor: '#e84347'}]}>
@@ -24,18 +59,18 @@ const CrearCuenta = () => {
         <H1 style={globalStyles.titulo}>UpTask</H1>
         <Form>
         <Item inlineLabel last style={globalStyles.input}>
-            <Input autoCompleteType="name" placeholder="Nombre" />
+            <Input  placeholder="Nombre" onChange={(text) => setNombre(text)} />
           </Item>
           <Item inlineLabel last style={globalStyles.input}>
-            <Input autoCompleteType="email" placeholder="Email" />
+            <Input autoCompleteType="email" placeholder="Email" onChange={(text) => setEmail(text)} />
           </Item>
           <Item inlineLabel last style={globalStyles.input}>
-            <Input secureTextEntry={true} placeholder="Password" />
+            <Input secureTextEntry={true} placeholder="Password" onChange={(text) => setPassword(text)} />
           </Item>
-          <Button square block style={globalStyles.boton}>
+          <Button square block style={globalStyles.boton} onPress={() => handleSubmit()}>
             <Text style={globalStyles.botonTexto}>Registrarse</Text>
           </Button>
-
+          {mensaje && mostrarAlerta()}
         </Form>
       </View>
     </Container>

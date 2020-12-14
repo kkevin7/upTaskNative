@@ -1,50 +1,50 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
+import {Root} from 'native-base';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 //Screens
 import Login from './views/Login';
-import CrearCuenta from './views/CrearCuenta'; 
+import CrearCuenta from './views/CrearCuenta';
 
 const Stack = createStackNavigator();
 
 const App = () => {
   return (
     <>
-     <NavigationContainer>
-       <Stack.Navigator initialRouteName="Login">
-         <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{
-              title: "Iniciar Sesión",
-              headerShown: false
-            }}
-         />
-         <Stack.Screen
-            name="CrearCuenta"
-            component={CrearCuenta}
-            options={{
-              title: "Crear Cuenta",
-              headerStyle: {
-                backgroundColor: '#28303B'
-              },
-              headerTintColor: '#FFF',
-              headerTitleStyle: {
-                fontWeight: 'bold'
-              }
-            }}
-         />
-
-       </Stack.Navigator>
-     </NavigationContainer>
+      <Root>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Login">
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{
+                title: 'Iniciar Sesión',
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="CrearCuenta"
+              component={CrearCuenta}
+              options={{
+                title: 'Crear Cuenta',
+                headerStyle: {
+                  backgroundColor: '#28303B',
+                },
+                headerTintColor: '#FFF',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+              }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Root>
     </>
   );
 };
 
-const styles = StyleSheet.create({
-  
-});
+const styles = StyleSheet.create({});
 
 export default App;
