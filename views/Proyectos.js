@@ -1,5 +1,5 @@
-import React from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useState, useCallback} from 'react';
+import {StyleSheet, VirtualizedList, RefreshControl} from 'react-native';
 import {
   Container,
   Button,
@@ -32,10 +32,32 @@ const Proyectos = () => {
   const navigation = useNavigation();
   //Apollo
   const {data, loading, error} = useQuery(OBTENER_PROYECTOS);
-
-  console.log(data);
+  //State
+  const [refreshing, setRefreshing] = React.useState(false);
 
   if (loading) return <LoadingIndicator />;
+
+  console.log(data.obtenerProyectos);
+
+  const onRefresh = React.useCallback(async () => {
+    setRefreshing(true);
+    await reload().then(() => setRefreshing(false));
+  }, []);
+
+  const getItemCount = (data) => data.length;
+  const getItem = (data, index) => data[index];
+  const renderItem = (proyecto) => {
+    return (
+      <ListItem key={proyecto.id}
+        onPress={() => navigation.navigate('Proyecto', proyecto)}
+      >
+        <Left>
+          <Text>{proyecto.nombre}</Text>
+        </Left>
+        <Right></Right>
+      </ListItem>
+    );
+  };
 
   return (
     <Container style={[globalStyles.contenedor, {backgroundColor: '#E84347'}]}>
@@ -48,10 +70,34 @@ const Proyectos = () => {
       </Button>
 
       <H2 style={globalStyles.subtitulo}>Selecciona un proyecto</H2>
+
+      <Content>
+        <VirtualizedList
+          style={styles.contenido}
+          data={data.obtenerProyectos}
+          initialNumToRender={4}
+          renderItem={({item}) => renderItem(item)}
+          keyExtractor={(item) => item.id}
+          getItemCount={getItemCount}
+          getItem={getItem}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              colors={['#28303B']}
+            />
+          }
+        />
+      </Content>
     </Container>
   );
 };
 
 export default Proyectos;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  contenido: {
+    backgroundColor: '#FFF',
+    marginHorizontal: '2.5%',
+  },
+});
