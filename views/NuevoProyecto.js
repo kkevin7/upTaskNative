@@ -14,10 +14,23 @@ import {
 import {useNavigation} from '@react-navigation/native';
 //Styles
 import globalStyles from '../styles/global';
+//Apollo
+import {gql, useMutation} from '@apollo/client';
+
+const NUEVO_PROYECTO = gql`
+mutation nuevoProyecto($input: ProyectoInput){
+    nuevoProyecto(input: $input){
+        nombre,
+        id
+    }
+}
+`;
 
 const NuevoProyecto = () => {
   //config
   const navigation = useNavigation();
+  //Apollo
+  const [nuevoProyecto] = useMutation(NUEVO_PROYECTO);
   //State
   const [mensaje, setMensaje] = useState(null);
   const [nombre, setNombre] = useState('');
@@ -31,10 +44,26 @@ const NuevoProyecto = () => {
     });
   };
 
-  const handleSubmit = () => {
-    if(nombre === ''){
-        setMensaje('El Nombre del proyecto es Obligatorio');
-        return;
+  const handleSubmit = async () => {
+    if (nombre === '') {
+      setMensaje('El Nombre del proyecto es Obligatorio');
+      return;
+    }
+
+    //Save data
+    try {
+        const {data} = await nuevoProyecto({
+            variables: {
+                input: {
+                    nombre
+                }
+            }
+        });
+        setMensaje('Proyecto Creado Correctamente');
+        navigation.navigate("Proyectos");
+    } catch (error) {
+        console.log("Error nuevoProyecto: ", error);
+        setMensaje(error.message);
     }
 
     navigation.navigate('Proyectos');
@@ -61,7 +90,7 @@ const NuevoProyecto = () => {
           onPress={() => handleSubmit()}>
           <Text style={globalStyles.botonTexto}>Crear Proyecto</Text>
         </Button>
-        
+
         {mensaje && mostrarAlerta()}
       </View>
     </Container>
