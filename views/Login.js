@@ -91,6 +91,7 @@ const Login = () => {
             autoCompleteType="email"
             placeholder="Email"
             autoCapitalize="none"
+            value={email}
             onChangeText={(text) => setEmail(text)}
           />
         </Item>
@@ -99,6 +100,7 @@ const Login = () => {
             secureTextEntry={true}
             placeholder="Password"
             autoCapitalize="none"
+            value={password}
             onChangeText={(text) => setPassword(text)}
           />
         </Item>

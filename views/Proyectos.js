@@ -37,6 +37,10 @@ const Proyectos = () => {
 
   if (loading) return <LoadingIndicator />;
 
+  const reload = () => {
+      
+  }
+
   //   const onRefresh = React.useCallback(async () => {
   //     setRefreshing(true);
   //     await reload().then(() => setRefreshing(false));
