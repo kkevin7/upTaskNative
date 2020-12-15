@@ -10,6 +10,7 @@ import {
   Item,
   Toast,
 } from 'native-base';
+//Navigation
 import {useNavigation} from '@react-navigation/native';
 //Styles
 import globalStyles from '../styles/global';

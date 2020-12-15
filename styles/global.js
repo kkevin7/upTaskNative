@@ -20,10 +20,10 @@ const globalStyles = StyleSheet.create({
   subtitulo:{
     textAlign: 'center',
     marginBottom: 20,
+    marginTop: 20,
     fontSize: 26,
     fontWeight: 'bold',
     color: '#FFF',
-    marginTop: 20,
   },
   input: {
     backgroundColor: '#FFF',
