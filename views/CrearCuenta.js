@@ -13,7 +13,6 @@ import {
 import {useNavigation} from '@react-navigation/native';
 //Styles
 import globalStyles from '../styles/global';
-
 //Apollo
 import {gql, useMutation} from '@apollo/client';
 
@@ -51,7 +50,6 @@ const CrearCuenta = () => {
 
     //save user
     try {
-      console.log("Inicio");
       const {data} = await crearUsuario({
         variables: {
           input: {
