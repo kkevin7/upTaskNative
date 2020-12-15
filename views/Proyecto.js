@@ -14,7 +14,9 @@ import {
 } from 'native-base';
 // Styles
 import globalStyles from '../styles/global';
-import {gql, useMutation} from '@apollo/client';
+import {gql, useMutation, useQuery} from '@apollo/client';
+//Components
+import LoadingIndicator from '../components/LoadingIndicator';
 
 const NUEVA_TAREA = gql`
   mutation nuevaTarea($input: TareaInput) {
@@ -27,12 +29,34 @@ const NUEVA_TAREA = gql`
   }
 `;
 
+const OBTENER_TAREAS = gql`
+  query obtenerTareas($input: ProyectoIDInput) {
+    obtenerTareas(input: $input) {
+      id
+      nombre
+      estado
+    }
+  }
+`;
+
 const Proyecto = ({route}) => {
+  const {id} = route.params;
   //Apollo
   const [nuevaTarea] = useMutation(NUEVA_TAREA);
+  const {data, loading, error} = useQuery(OBTENER_TAREAS, {
+    variables: {
+      input: {
+        proyecto: id,
+      },
+    },
+  });
   //State del componente
   const [nombre, setNombre] = useState('');
   const [mensaje, setMensaje] = useState('');
+
+  console.log(data);
+
+  if(loading) return <LoadingIndicator/>
 
   //Validar y crear tareas
   const handleSubmit = async () => {
@@ -54,7 +78,7 @@ const Proyecto = ({route}) => {
 
       setTimeout(() => {
         setMensaje(null);
-      }, 3000)
+      }, 3000);
     } catch (error) {
       console.log('Error nuevaTarea: ', error);
       setMensaje(error.message);
