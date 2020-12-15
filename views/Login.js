@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import globalStyles from '../styles/global';
 //Apollo
 import {gql, useMutation} from '@apollo/client';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const AUTENTICAR_USUARIO = gql`
 mutation autenticarUsuario($input: AutenticarInput){
@@ -67,8 +68,12 @@ const Login = () => {
           }
         }
       });
-      // setMensaje(data);
-      console.log(data.autenticarUsuario.token);
+      const {token} = data.autenticarUsuario;
+      //Coloar token en storage
+      await AsyncStorage.setItem('token', token);
+      //Redireccionar a Proyectos
+      navigation.navigate("Proyectos");
+
     } catch (error) {
       console.log("Login Error: ",error);
       setMensaje(error.message.replace('GraphQL error', ''));
