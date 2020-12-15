@@ -1,29 +1,56 @@
 import React from 'react';
-import { StyleSheet} from 'react-native';
-import { Container, Button, Text, H2, Content, List, ListItem, Left, Right } from 'native-base';
+import {StyleSheet} from 'react-native';
+import {
+  Container,
+  Button,
+  Text,
+  H2,
+  Content,
+  List,
+  ListItem,
+  Left,
+  Right,
+} from 'native-base';
 //Navigation
 import {useNavigation} from '@react-navigation/native';
 //Styles
 import globalStyles from '../styles/global';
+import {gql, useQuery} from '@apollo/client';
+//Components
+import LoadingIndicator from '../components/LoadingIndicator';
+
+const OBTENER_PROYECTOS = gql`
+  query obtenerProyectos {
+    obtenerProyectos {
+      id
+      nombre
+    }
+  }
+`;
 
 const Proyectos = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  //Apollo
+  const {data, loading, error} = useQuery(OBTENER_PROYECTOS);
 
-    return (
-        <Container style={[globalStyles.contenedor, {backgroundColor: '#E84347'}]}>
-            <Button
-                style={[globalStyles.boton, {marginTop: 30}]}
-                square
-                block
-                onPress={() => navigation.navigate('NuevoProyecto')}
-            >
-                <Text style={globalStyles.botonTexto}>Nuevo Proyecto</Text>
-            </Button>
+  console.log(data);
 
-            <H2 style={globalStyles.subtitulo}>Selecciona un proyecto</H2>
-        </Container>
-    )
-}
+  if (loading) return <LoadingIndicator />;
+
+  return (
+    <Container style={[globalStyles.contenedor, {backgroundColor: '#E84347'}]}>
+      <Button
+        style={[globalStyles.boton, {marginTop: 30}]}
+        square
+        block
+        onPress={() => navigation.navigate('NuevoProyecto')}>
+        <Text style={globalStyles.botonTexto}>Nuevo Proyecto</Text>
+      </Button>
+
+      <H2 style={globalStyles.subtitulo}>Selecciona un proyecto</H2>
+    </Container>
+  );
+};
 
 export default Proyectos;
 
