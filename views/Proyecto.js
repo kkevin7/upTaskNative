@@ -14,22 +14,51 @@ import {
 } from 'native-base';
 // Styles
 import globalStyles from '../styles/global';
+import {gql, useMutation} from '@apollo/client';
+
+const NUEVA_TAREA = gql`
+  mutation nuevaTarea($input: TareaInput) {
+    nuevaTarea(input: $input) {
+      nombre
+      id
+      proyecto
+      estado
+    }
+  }
+`;
 
 const Proyecto = ({route}) => {
+  //Apollo
+  const [nuevaTarea] = useMutation(NUEVA_TAREA);
   //State del componente
   const [nombre, setNombre] = useState('');
   const [mensaje, setMensaje] = useState('');
 
   //Validar y crear tareas
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (nombre === '') {
       setMensaje('El nombre de la tarea es obligatorio');
     }
 
-    setMensaje('');
-
     //Almacenarlo en la base de datos
+    try {
+      const {data} = await nuevaTarea({
+        variables: {
+          input: {
+            nombre,
+            proyecto: route.params.id,
+          },
+        },
+      });
+      setMensaje('Tarea Creada Correctamente');
 
+      setTimeout(() => {
+        setMensaje(null);
+      }, 3000)
+    } catch (error) {
+      console.log('Error nuevaTarea: ', error);
+      setMensaje(error.message);
+    }
   };
 
   const mostrarAlerta = () => {
@@ -51,7 +80,7 @@ const Proyecto = ({route}) => {
             <Input
               placeholder="Nombre Tarea"
               value={nombre}
-              onChangeText={(text) => setNombre(text.trim())}
+              onChangeText={(text) => setNombre(text)}
             />
           </Item>
         </Form>
