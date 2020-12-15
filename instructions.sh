@@ -22,4 +22,4 @@ implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
 import 'react-native-gesture-handler';
 
 #Apollo GraphQL Dependences
-yarn add @apollo/client apollo-link-http apollo-cache-inmemory graphql
+yarn add @apollo/client apollo-link-http apollo-cache-inmemory graphql apollo-link-context

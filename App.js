@@ -7,7 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 //Screens
 import Login from './views/Login';
 import CrearCuenta from './views/CrearCuenta';
-import Proyectos from './views/Poryectos';
+import Proyectos from './views/Proyectos';
 
 const Stack = createStackNavigator();
 
