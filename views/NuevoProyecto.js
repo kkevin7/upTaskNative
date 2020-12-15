@@ -18,19 +18,36 @@ import globalStyles from '../styles/global';
 import {gql, useMutation} from '@apollo/client';
 
 const NUEVO_PROYECTO = gql`
-mutation nuevoProyecto($input: ProyectoInput){
-    nuevoProyecto(input: $input){
-        nombre,
-        id
+  mutation nuevoProyecto($input: ProyectoInput) {
+    nuevoProyecto(input: $input) {
+      nombre
+      id
     }
-}
+  }
+`;
+
+const OBTENER_PROYECTOS = gql`
+  query obtenerProyectos {
+    obtenerProyectos {
+      id
+      nombre
+    }
+  }
 `;
 
 const NuevoProyecto = () => {
   //config
   const navigation = useNavigation();
   //Apollo
-  const [nuevoProyecto] = useMutation(NUEVO_PROYECTO);
+  const [nuevoProyecto] = useMutation(NUEVO_PROYECTO, {
+    update(cache, {data: {nuevoProyecto}}) {
+      const {obtenerProyectos} = cache.readQuery({query: OBTENER_PROYECTOS});
+      cache.writeQuery({
+        query: OBTENER_PROYECTOS,
+        data: {obtenerProyectos: obtenerProyectos.concat([nuevoProyecto])},
+      });
+    },
+  });
   //State
   const [mensaje, setMensaje] = useState(null);
   const [nombre, setNombre] = useState('');
@@ -52,18 +69,18 @@ const NuevoProyecto = () => {
 
     //Save data
     try {
-        const {data} = await nuevoProyecto({
-            variables: {
-                input: {
-                    nombre
-                }
-            }
-        });
-        setMensaje('Proyecto Creado Correctamente');
-        navigation.navigate("Proyectos");
+      const {data} = await nuevoProyecto({
+        variables: {
+          input: {
+            nombre,
+          },
+        },
+      });
+      setMensaje('Proyecto Creado Correctamente');
+      navigation.navigate('Proyectos');
     } catch (error) {
-        console.log("Error nuevoProyecto: ", error);
-        setMensaje(error.message);
+      console.log('Error nuevoProyecto: ', error);
+      setMensaje(error.message);
     }
 
     navigation.navigate('Proyectos');
