@@ -5,11 +5,12 @@ import {setContext} from 'apollo-link-context';
 import {createHttpLink} from 'apollo-link-http';
 import AsyncStorage from '@react-native-community/async-storage';
 
+// Platform.OS === 'ios'
+//       ? 'http://localhost:4000/'
+//       : 'http://192.168.1.17:4000/',
+
 const httpLink = createHttpLink({
-  uri:
-    Platform.OS === 'ios'
-      ? 'http://localhost:4000/'
-      : 'http://192.168.1.17:4000/',
+  uri: 'https://tasksgraphql.herokuapp.com/',
 });
 
 const authLink = setContext(async (_, {headers}) => {
