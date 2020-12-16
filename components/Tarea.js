@@ -43,28 +43,30 @@ const Tarea = ({tarea, proyecto}) => {
   //Apollo
   const [actualizarTarea] = useMutation(ACTUALIZAR_TAREA);
   const [eliminarTarea] = useMutation(ELIMINAR_TAREA, {
-      update(cache){
-        const {obtenerTareas} = cache.readQuery({
-            query: OBTENER_TAREAS,
-            variables: {
-                input: {
-                    proyecto
-                }
-            }
-        });
+    update(cache) {
+      const {obtenerTareas} = cache.readQuery({
+        query: OBTENER_TAREAS,
+        variables: {
+          input: {
+            proyecto,
+          },
+        },
+      });
 
-        cache.writeQuery({
-            query: OBTENER_TAREAS,
-            variables: {
-                input: {
-                    proyecto
-                }
-            },
-            data: {
-                obtenerTareas: obtenerTareas.filter(tareaActual => tareaActual.id !== tarea.id)
-            }
-        })
-      }
+      cache.writeQuery({
+        query: OBTENER_TAREAS,
+        variables: {
+          input: {
+            proyecto,
+          },
+        },
+        data: {
+          obtenerTareas: obtenerTareas.filter(
+            (tareaActual) => tareaActual.id !== tarea.id,
+          ),
+        },
+      });
+    },
   });
 
   const cambiarEstado = async () => {
@@ -84,20 +86,16 @@ const Tarea = ({tarea, proyecto}) => {
   };
 
   const mostrarEliminar = () => {
-    Alert.alert(
-      'Eliminar Tarea',
-      '¿Deseas eliminar esta tarea?',
-      [
-        {
-            text: 'Cancelar',
-            style: 'cancel',
-          },
-          {
-            text: 'OK',
-            onPress: () => eliminarTareaItem(),
-          },
-      ]
-    );
+    Alert.alert('Eliminar Tarea', '¿Deseas eliminar esta tarea?', [
+      {
+        text: 'Cancelar',
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => eliminarTareaItem(),
+      },
+    ]);
   };
 
   const eliminarTareaItem = async () => {
@@ -107,7 +105,6 @@ const Tarea = ({tarea, proyecto}) => {
           id,
         },
       });
-      console.log(data);
     } catch (error) {
       console.log('Error eliminar Tarea: ', error);
     }

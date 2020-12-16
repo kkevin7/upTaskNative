@@ -43,7 +43,30 @@ const OBTENER_TAREAS = gql`
 const Proyecto = ({route}) => {
   const {id} = route.params;
   //Apollo
-  const [nuevaTarea] = useMutation(NUEVA_TAREA);
+  const [nuevaTarea] = useMutation(NUEVA_TAREA, {
+    update(cache, {data: nuevaTarea}) {
+      const {obtenerTareas} = cache.readQuery({
+        query: OBTENER_TAREAS,
+        variables: {
+          input: {
+            proyecto: id,
+          },
+        },
+      });
+
+      cache.writeQuery({
+        query: OBTENER_TAREAS,
+        variables: {
+          input: {
+            proyecto: id,
+          },
+        },
+        data: {
+          obtenerTareas: [...obtenerTareas, nuevaTarea],
+        },
+      });
+    },
+  });
   const {data, loading, error} = useQuery(OBTENER_TAREAS, {
     variables: {
       input: {
@@ -55,9 +78,7 @@ const Proyecto = ({route}) => {
   const [nombre, setNombre] = useState('');
   const [mensaje, setMensaje] = useState('');
 
-  console.log(data);
-
-  if(loading) return <LoadingIndicator/>
+  if (loading) return <LoadingIndicator />;
 
   //Validar y crear tareas
   const handleSubmit = async () => {
@@ -123,12 +144,8 @@ const Proyecto = ({route}) => {
 
         <Content>
           <List style={styles.contenido}>
-            {data.obtenerTareas.map(tarea => (
-              <Tarea
-                key={tarea.id}
-                tarea={tarea}
-                proyecto={id}
-              />
+            {data.obtenerTareas.map((tarea) => (
+              <Tarea key={tarea.id} tarea={tarea} proyecto={id} />
             ))}
           </List>
         </Content>
@@ -143,7 +160,7 @@ export default Proyecto;
 
 const styles = StyleSheet.create({
   contenido: {
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     marginHorizontal: '2.5%',
-  }
+  },
 });
