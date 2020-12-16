@@ -17,6 +17,7 @@ import globalStyles from '../styles/global';
 import {gql, useMutation, useQuery} from '@apollo/client';
 //Components
 import LoadingIndicator from '../components/LoadingIndicator';
+import Tarea from '../components/Tarea';
 
 const NUEVA_TAREA = gql`
   mutation nuevaTarea($input: TareaInput) {
@@ -117,6 +118,19 @@ const Proyecto = ({route}) => {
           <Text>Crear Tarea</Text>
         </Button>
 
+        <H2 style={globalStyles.subtitulo}>Tareas: {route.params.nombre}</H2>
+
+        <Content>
+          <List style={styles.contenido}>
+            {data.obtenerTareas.map(tarea => (
+              <Tarea
+                key={tarea.id}
+                tarea={tarea}
+              />
+            ))}
+          </List>
+        </Content>
+
         {mostrarAlerta()}
       </View>
     </Container>
@@ -125,4 +139,9 @@ const Proyecto = ({route}) => {
 
 export default Proyecto;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  contenido: {
+    backgroundColor: "#FFF",
+    marginHorizontal: '2.5%',
+  }
+});
