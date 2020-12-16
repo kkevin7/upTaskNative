@@ -63,6 +63,7 @@ const Proyecto = ({route}) => {
   const handleSubmit = async () => {
     if (nombre === '') {
       setMensaje('El nombre de la tarea es obligatorio');
+      return;
     }
 
     //Almacenarlo en la base de datos
